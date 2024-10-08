@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expanse Tracker</title>
+</head>
+
+<body>
+<main>
+    <h1>Welcome to our Expanse Tracker Website</h1>
+
+
+    {% for expense in expenses %}
+        <a href="#">
+            <h2>{{ expense['amount'] }}</h2>
+        </a>
+        <div>Expense category: {{ expense['category'] }}</div>
+        <div>Expense description: {{ expense['description'] }}</div>
+        <span class="badge badge-primary">{{ expense['date'] }}</span>
+        <hr>
+    {% endfor %}
+</main>
+</body>
+</html>
