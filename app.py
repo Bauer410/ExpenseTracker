@@ -1,21 +1,29 @@
-import sqlite3
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+
+from database.DatabaseManager import DatabaseManager
+from model.Expense import ExpenseDto
 
 app = Flask(__name__)
-
-
-def get_db_connection():
-    conn = sqlite3.connect('./database/database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+db = DatabaseManager()
 
 
 @app.route('/')
-def hello_world():
-    conn = get_db_connection()
-    expenses = conn.execute('SELECT * FROM expenses').fetchall()
-    conn.close()
-    return render_template('index.html', expenses=expenses)
+def index():
+    expenses = db.getAllExpenses()
+    if len(expenses) > 0:
+        print("There are this number of expenses in database: ")
+        print(len(expenses))
+    return render_template('index.html', expenses=db.getAllExpenses())
+
+
+@app.route("/addExpense", methods=['POST'])
+def addExpense():
+    description = request.form.get('description')
+    amount = request.form.get('amount')
+    category = request.form.get('category')
+    expense = ExpenseDto(11, category, float(amount), description)
+    db.saveExpense(expense)
+    return redirect("/")
 
 
 if __name__ == '__main__':

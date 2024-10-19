@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expanse Tracker</title>
     <style>
-        body { 
+        body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center; /* Centers horizontally */
             align-items: center;     /* Centers vertically */
             height: 100vh;           /* Full viewport height */
-            margin: 0; 
+            margin: 0;
             background: linear-gradient(to bottom, #f78ca0, #a18cd1);
         }
         #expense-form { margin-bottom: 20px; }
@@ -19,27 +19,26 @@
         input, button {
             padding: 10px; margin: 5px;
         }
-        table { 
+        table {
             width: 50%; margin-top: 20px; border-collapse: collapse;
         }
-        th, td { 
+        th, td {
             padding: 10px; border: 1px solid #ddd;
         }
     </style>
 </head>
 
 <body>
-    <main>    
-    <body>
+    <main>
         <h1>Welcome to our Expanse Tracker Website</h1>
-    
-        <div id="expense-form">
-            <input type="text" id="description" placeholder="Description">
-            <input type="number" id="amount" placeholder="Amount">
-            <input type="text" id="category" placeholder="Category">
-            <button onclick="addExpense()">Add Expense</button>
-        </div>
-    
+
+        <form id="expense-form" action="{{ url_for('addExpense') }}" method="post">
+            <input name="description" type="text" id="description" placeholder="Description">
+            <input name="amount" type="number" id="amount" placeholder="Amount">
+            <input name="category" type="text" id="category" placeholder="Category">
+            <input type="submit" value="Add Expense">
+        </form>
+
         <h2>Expenses</h2>
         <table>
             <thead>
@@ -53,10 +52,6 @@
             </tbody>
         </table>
 
-        
-
-
-        
     </main>
 </body>
 </html>
