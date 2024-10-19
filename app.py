@@ -25,6 +25,8 @@ def addExpense():
     db.saveExpense(expense)
     return redirect("/")
 
+def functionToTest(x):
+    return x*x
 
 if __name__ == '__main__':
     app.run()
