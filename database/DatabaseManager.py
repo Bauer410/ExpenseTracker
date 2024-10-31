@@ -29,7 +29,7 @@ class DatabaseManager:
     def editExpense(self, expense):
         return
     
-     def getAllCategories(self):
+    def getAllCategories(self):
         conn = self.get_db_connection()
         categories = conn.execute('SELECT * FROM categories').fetchall()
         conn.close()
