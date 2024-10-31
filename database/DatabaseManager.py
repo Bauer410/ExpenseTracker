@@ -81,7 +81,7 @@ class DatabaseManager:
         conn.close()
         return total_expenses_by_user
 
-def getTotalExpensesByCategory(self):
+    def getTotalExpensesByCategory(self):
         conn = self.get_db_connection()
         total_expenses_by_category = conn.execute(
             'SELECT categories.category_name, SUM(expenses.amount) AS total_spent FROM expenses '
