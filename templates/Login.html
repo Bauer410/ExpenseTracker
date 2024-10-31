@@ -68,12 +68,38 @@
         .additional-links a:hover {
             text-decoration: underline;
         }
+
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-title">Login</div>
-        <form id="login-form" action="{{ url_for('loginVerify') }}" method="post">
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form id="login-form" action="{{ url_for('login_verify') }}" method="post">
             <input name="username" type="text" placeholder="Username" class="input-field" required>
             <input name="password" type="password" placeholder="Password" class="input-field" required>
             <button type="submit" class="login-button">Sign In</button>

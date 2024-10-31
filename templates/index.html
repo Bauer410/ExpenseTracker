@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expanse Tracker</title>
+    <title>Expense Tracker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,12 +25,38 @@
         th, td {
             padding: 10px; border: 1px solid #ddd;
         }
+
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 
 <body>
     <main>
-        <h1>Welcome to our Expanse Tracker Website</h1>
+        <h1>Welcome to our Expense Tracker Website</h1>
+
+        <!-- Flash messages section -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
 
         <form id="test-form" action="{{ url_for('login') }}" method="get">
             <div>Just a test to get to the login page</div>
@@ -38,7 +64,7 @@
             <div><br></div>
         </form>
 
-        <form id="expense-form" action="{{ url_for('addExpense') }}" method="post">
+        <form id="expense-form" action="{{ url_for('add_expense') }}" method="post">
             <input name="description" type="text" id="description" placeholder="Description">
             <input name="amount" type="number" id="amount" placeholder="Amount">
             <input name="category" type="text" id="category" placeholder="Category">
@@ -51,13 +77,19 @@
                 <tr>
                     <th>Description</th>
                     <th>Amount</th>
-                    <th>category</th>
+                    <th>Category</th>
                 </tr>
             </thead>
             <tbody id="expense-list">
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.description }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.category }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
-
     </main>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
