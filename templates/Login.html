@@ -1,119 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Expense Tracker Login Page</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="vendor/bootstrap/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="fonts/font-awesome-4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css"
-    />
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="vendor/css-hamburgers/hamburgers.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="vendor/animsition/css/animsition.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="vendor/select2/select2.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="vendor/daterangepicker/daterangepicker.css"
-    />
-    <link rel="stylesheet" type="text/css" href="css/util.css" />
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-  </head>
-  <body>
-    <div class="limiter">
-      <div
-        class="container-login100"
-        style="background: linear-gradient(to bottom, #f78ca0, #a18cd1)"
-      >
-        <div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
-          <form class="login100-form validate-form flex-sb flex-w">
-            <span class="login100-form-title p-b-53"> Login </span>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #f78ca0, #a18cd1);
+        }
 
-            <a href="#" class="btn-face m-b-20">
-              <i class="fa fa-facebook-official"></i>
-              Facebook
-            </a>
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
 
-            <a href="#" class="btn-google m-b-20">
-              <img src="images/icons/icon-google.png" alt="GOOGLE" />
-              Google
-            </a>
+        .login-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-            <div class="p-t-31 p-b-9">
-              <span class="txt1"> Username </span>
-            </div>
-            <div
-              class="wrap-input100 validate-input"
-              data-validate="Username is required"
-            >
-              <input class="input100" type="text" name="username" />
-              <span class="focus-input100"></span>
-            </div>
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-            <div class="p-t-13 p-b-9">
-              <span class="txt1"> Password </span>
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-              <a href="#" class="txt2 bo1 m-l-5"> Forgot? </a>
-            </div>
-            <div
-              class="wrap-input100 validate-input"
-              data-validate="Password is required"
-            >
-              <input class="input100" type="password" name="pass" />
-              <span class="focus-input100"></span>
-            </div>
+        .login-button:hover {
+            background-color: #5a4db1;
+        }
+        
+        .additional-links {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
 
-            <div class="container-login100-form-btn m-t-17">
-              <button class="login100-form-btn">Sign In</button>
-            </div>
+        .additional-links a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
 
-            <div class="w-full text-center p-t-55">
-              <span class="txt2"> Not a member? </span>
-
-              <a href="#" class="txt2 bo1"> Sign up now </a>
-            </div>
-          </form>
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-title">Login</div>
+        <form id="login-form" action="{{ url_for('loginVerify') }}" method="post">
+            <input name="username" type="text" placeholder="Username" class="input-field" required>
+            <input name="password" type="password" placeholder="Password" class="input-field" required>
+            <button type="submit" class="login-button">Sign In</button>
+        </form>
+        <div class="additional-links">
+            <p><a href="#">Forgot password?</a></p>
+            <p>Not a member? <a href="#">Sign up now</a></p>
         </div>
-      </div>
     </div>
-
-    <div id="dropDownSelect1"></div>
-
-    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-    <script src="vendor/animsition/js/animsition.min.js">
-      </script
-      	<script src="vendor/bootstrap/js/popper.js">
-    </script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="vendor/select2/select2.min.js"></script>
-    <script src="vendor/daterangepicker/moment.min.js"></script>
-    <script src="vendor/daterangepicker/daterangepicker.js"></script>
-    <script src="vendor/countdowntime/countdowntime.js"></script>
-    <script src="js/main.js"></script>
-  </body>
+</body>
 </html>

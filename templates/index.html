@@ -32,6 +32,12 @@
     <main>
         <h1>Welcome to our Expanse Tracker Website</h1>
 
+        <form id="test-form" action="{{ url_for('login') }}" method="get">
+            <div>Just a test to get to the login page</div>
+            <input type="submit" value="Route to Login page">
+            <div><br></div>
+        </form>
+
         <form id="expense-form" action="{{ url_for('addExpense') }}" method="post">
             <input name="description" type="text" id="description" placeholder="Description">
             <input name="amount" type="number" id="amount" placeholder="Amount">

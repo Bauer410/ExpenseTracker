@@ -15,6 +15,16 @@ def index():
         print(len(expenses))
     return render_template('index.html', expenses=db.getAllExpenses())
 
+@app.route('/login')
+def login():
+    return render_template('Login.html')
+
+@app.route('/loginVerify', methods=['POST'])
+def loginVerify():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    print(username, password)
+    return render_template('index.html')
 
 @app.route("/addExpense", methods=['POST'])
 def addExpense():
