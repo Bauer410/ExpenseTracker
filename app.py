@@ -12,7 +12,7 @@ def index():
         flash("You need to log in first", "error")
         return redirect(url_for('login'))
     
-    expenses = db.getAllExpenses()
+    expenses = db.getUserExpenses()
     if len(expenses) > 0:
         print("There are this number of expenses in database: ")
         print(len(expenses))

@@ -15,8 +15,9 @@ class DatabaseManager:
 
     def saveExpense(self, expense):
         conn = self.get_db_connection()
+        cat_id = self.addCategory(expense.category)
         conn.execute('INSERT INTO expenses (user_id, category_id, amount, description) VALUES (?,?,?,?)',
-                     (18, 22, expense.amount, expense.description))
+                     (1, cat_id['category_id'], expense.amount, expense.description))
         conn.commit()
         conn.close()
 
@@ -28,7 +29,7 @@ class DatabaseManager:
 
     def editExpense(self, expense):
         return
-    
+
     def getAllCategories(self):
         conn = self.get_db_connection()
         categories = conn.execute('SELECT * FROM categories').fetchall()
@@ -37,9 +38,13 @@ class DatabaseManager:
 
     def addCategory(self, category_name):
         conn = self.get_db_connection()
-        conn.execute('INSERT INTO categories (category_name) VALUES (?)', (category_name,))
+        cat_id = conn.execute('SELECT * FROM categories WHERE category_name = ?', (category_name,)).fetchone()
+        if cat_id is None:
+            conn.execute('INSERT INTO categories (category_name) VALUES (?)', (category_name,))
+            cat_id = conn.execute('SELECT * FROM categories WHERE category_name = ?', (category_name,)).fetchone()
         conn.commit()
         conn.close()
+        return cat_id
 
     def getTotalExpenses(self, user_id=None):
         conn = self.get_db_connection()
@@ -49,7 +54,7 @@ class DatabaseManager:
             total = conn.execute('SELECT SUM(amount) FROM expenses').fetchone()[0]
         conn.close()
         return total if total else 0
-    
+
     def addUser(self, username, email, password_hash):
         conn = self.get_db_connection()
         conn.execute('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
@@ -63,7 +68,7 @@ class DatabaseManager:
         conn.close()
         return users
 
-# this is for getting expense analysis from view
+    # this is for getting expense analysis from view
 
     def getUserExpenses(self):
         conn = self.get_db_connection()
