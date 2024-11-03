@@ -22,7 +22,7 @@ def test_index_not_logged_in(client):
     assert response.status_code == 302
 
 
-@patch('app.session', {'username': 'test'})
+#@patch('app.session', {'username': 'test'})
 def test_index_logged_in(client):
     response = client.get(follow_redirects=True)
     html = response.data.decode()
