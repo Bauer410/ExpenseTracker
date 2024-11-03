@@ -11,8 +11,11 @@ def index():
     if 'username' not in session:
         flash("You need to log in first", "error")
         return redirect(url_for('login'))
-    
-    expenses = db.getUserExpenses()
+
+    expenses = list()
+    if app.debug is False:
+        expenses = db.getUserExpenses()
+
     if len(expenses) > 0:
         print("There are this number of expenses in database: ")
         print(len(expenses))
@@ -26,12 +29,12 @@ def login():
 def login_verify():
     username = request.form['username']
     password = request.form['password']
-    
+
     # Sample user data for demonstration
     users = {
         "test": "password",
     }
-    
+
     # Check if the username and password match
     if users.get(username) == password:
         session['username'] = username
@@ -52,7 +55,7 @@ def add_expense():
     if 'username' not in session:
         flash("You need to log in first", "error")
         return redirect(url_for('login'))
-    
+
     description = request.form.get('description')
     amount = request.form.get('amount')
     category = request.form.get('category')
@@ -64,4 +67,4 @@ def function_to_test(x):
     return x * x
 
 if __name__ == '__main__':
-    app.run() 
+    app.run()
