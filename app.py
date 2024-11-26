@@ -9,46 +9,40 @@ app.secret_key = "secret_key"  # Necessary for using flash messages
 @app.route('/')
 def index():
     if 'username' not in session:
-        flash("You need to log in first", "error")
         return redirect(url_for('login'))
-
-    expenses = list()
-    if app.debug is False:
+    
+    expenses = []
+    if not app.debug:
         expenses = db.getUserExpenses()
 
-    if len(expenses) > 0:
-        print("There are this number of expenses in database: ")
-        print(len(expenses))
     return render_template('index.html', expenses=expenses)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        # Automatically log in without checking credentials
+        session['username'] = request.form['username']
+        flash("Login successful", "success")
+        return redirect(url_for('index'))
     return render_template('Login.html')
 
 @app.route('/loginVerify', methods=['POST'])
 def login_verify():
-    username = request.form['username']
-    password = request.form['password']
-
-    # Sample user data for demonstration
-    users = {
-        "test": "password",
-    }
-
-    # Check if the username and password match
-    if users.get(username) == password:
-        session['username'] = username
-        flash("Login successful", "success")
-        return redirect(url_for('index'))
-    else:
-        flash("Invalid credentials", "error")
-        return redirect(url_for('login'))
+    return login()
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     flash("You have been logged out", "success")
     return redirect(url_for('login'))
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        # Dummy action to redirect to the main page after signup
+        flash('Sign up successful! Redirecting to the main page.', 'success')
+        return redirect(url_for('index'))
+    return render_template('SignUp.html')
 
 @app.route("/addExpense", methods=['POST'])
 def add_expense():
@@ -61,10 +55,11 @@ def add_expense():
     category = request.form.get('category')
     expense = ExpenseDto(11, category, float(amount), description)
     db.saveExpense(expense)
+    flash("Expense added successfully!", "success")
     return redirect(url_for('index'))
 
 def function_to_test(x):
     return x * x
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
