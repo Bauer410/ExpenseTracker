@@ -12,10 +12,12 @@ def index():
         return redirect(url_for('login'))
     
     expenses = []
+    total_expenses = 0
     if not app.debug:
         expenses = db.getUserExpenses()
+        total_expenses = db.getTotalExpenses()
 
-    return render_template('index.html', expenses=expenses)
+    return render_template('index.html', expenses=expenses, total_expenses=total_expenses)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

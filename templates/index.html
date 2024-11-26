@@ -8,37 +8,33 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            justify-content: center; /* Centers horizontally */
-            align-items: center;     /* Centers vertically */
-            height: 100vh;           /* Full viewport height */
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
             margin: 0;
             background: linear-gradient(to bottom, #f78ca0, #a18cd1);
         }
         #expense-form { margin-bottom: 20px; }
-
-        input, button {
-            padding: 10px; margin: 5px;
-        }
+        input, button { padding: 10px; margin: 5px; }
         table {
             width: 50%; margin-top: 20px; border-collapse: collapse;
         }
         th, td {
             padding: 10px; border: 1px solid #ddd;
         }
-
         .flash-message {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            font-size: 14px;
+            padding: 10px; margin-bottom: 15px; border-radius: 5px; font-size: 14px;
         }
         .flash-message.success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #d4edda; color: #155724;
         }
         .flash-message.error {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #f8d7da; color: #721c24;
+        }
+        .total-expenses {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -84,6 +80,11 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- Total Expenses Section -->
+        <div class="total-expenses">
+            Total Expenses: ${{ total_expenses }}
+        </div>
     </main>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
