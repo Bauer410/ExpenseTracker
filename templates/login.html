@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #f78ca0, #a18cd1);
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background-color: #5a4db1;
+        }
+
+        .additional-links {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .additional-links a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="login-title">Login</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form id="login-form" action="{{ url_for('login_verify') }}" method="post">
+        <input name="username" type="text" placeholder="Username" class="input-field" required>
+        <input name="password" type="password" placeholder="Password" class="input-field" required>
+        <button type="submit" class="login-button">Log In</button>
+    </form>
+    <div class="additional-links">
+        <p><a href="#">Forgot password?</a></p>
+        <p>Not a member? <a href="{{ url_for('signup') }}">Sign up now</a></p>
+    </div>
+</div>
+</body>
+</html>

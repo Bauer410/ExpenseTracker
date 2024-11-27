@@ -17,7 +17,7 @@ class DatabaseManager:
         conn = self.get_db_connection()
         cat_id = self.addCategory(expense.category)
         conn.execute('INSERT INTO expenses (user_id, category_id, amount, description) VALUES (?,?,?,?)',
-                     (1, cat_id['category_id'], expense.amount, expense.description))
+                     (expense.user_id, cat_id['category_id'], expense.amount, expense.description))
         conn.commit()
         conn.close()
 
@@ -46,7 +46,7 @@ class DatabaseManager:
         conn.close()
         return cat_id
 
-    def getTotalExpenses(self, user_id=None):
+    def getTotalExpenses(self, user_id):
         conn = self.get_db_connection()
         if user_id:
             total = conn.execute('SELECT SUM(amount) FROM expenses WHERE user_id = ?', (user_id,)).fetchone()[0]
@@ -61,6 +61,13 @@ class DatabaseManager:
                      (username, email, password_hash))
         conn.commit()
         conn.close()
+
+    def getUserByUsername(self, username):
+        conn = self.get_db_connection()
+        user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+        conn.commit()
+        conn.close()
+        return user
 
     def getAllUsers(self):
         conn = self.get_db_connection()

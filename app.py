@@ -6,31 +6,46 @@ app = Flask(__name__, static_folder='templates', static_url_path='/static')
 db = DatabaseManager()
 app.secret_key = "secret_key"  # Necessary for using flash messages
 
+
 @app.route('/')
 def index():
     if 'username' not in session:
         return redirect(url_for('login'))
-    
-    expenses = []
-    total_expenses = 0
-    if not app.debug:
-        expenses = db.getUserExpenses()
-        total_expenses = db.getTotalExpenses()
 
-    return render_template('index.html', expenses=expenses, total_expenses=total_expenses)
+    dbUser = db.getUserByUsername(session['username'])
+    expenses = []
+    expensesAllUsers = db.getUserExpenses()
+    for expense in expensesAllUsers:
+        if expense['username'] == dbUser['username']:
+            expenses.append(expense)
+
+    return render_template('index.html', expenses=expenses, total_expenses=db.getTotalExpenses(dbUser['user_id']))
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Automatically log in without checking credentials
         session['username'] = request.form['username']
         flash("Login successful", "success")
         return redirect(url_for('index'))
-    return render_template('Login.html')
+    return render_template('login.html')
+
 
 @app.route('/loginVerify', methods=['POST'])
 def login_verify():
-    return login()
+    username = request.form['username']
+    password = request.form['password']
+    dbUser = db.getUserByUsername(username)
+
+    # Check if the username and password match
+    if dbUser['username'] == username and dbUser['password_hash'] == password:
+        session['username'] = username
+        flash("Login successful", "success")
+        return redirect(url_for('index'))
+    else:
+        flash("Invalid credentials", "error")
+        return redirect(url_for('login'))
+
 
 @app.route('/logout')
 def logout():
@@ -38,13 +53,20 @@ def logout():
     flash("You have been logged out", "success")
     return redirect(url_for('login'))
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        # Dummy action to redirect to the main page after signup
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        db.addUser(username, email, password)
+        session['username'] = request.form['username']
         flash('Sign up successful! Redirecting to the main page.', 'success')
         return redirect(url_for('index'))
-    return render_template('SignUp.html')
+    return render_template('signup.html')
+
 
 @app.route("/addExpense", methods=['POST'])
 def add_expense():
@@ -52,16 +74,21 @@ def add_expense():
         flash("You need to log in first", "error")
         return redirect(url_for('login'))
 
+    dbUser = db.getUserByUsername(session['username'])
+
     description = request.form.get('description')
     amount = request.form.get('amount')
     category = request.form.get('category')
-    expense = ExpenseDto(11, category, float(amount), description)
+    expense = ExpenseDto(dbUser['user_id'], category, float(amount), description)
     db.saveExpense(expense)
+
     flash("Expense added successfully!", "success")
     return redirect(url_for('index'))
 
+
 def function_to_test(x):
     return x * x
+
 
 if __name__ == '__main__':
     app.run(debug=True)

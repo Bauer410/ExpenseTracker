@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Sign Up Page</title>
     <style>
         body, html {
             height: 100%;
@@ -53,7 +53,7 @@
         .login-button:hover {
             background-color: #5a4db1;
         }
-        
+
         .additional-links {
             margin-top: 15px;
             font-size: 14px;
@@ -75,10 +75,12 @@
             border-radius: 5px;
             font-size: 14px;
         }
+
         .flash-message.success {
             background-color: #d4edda;
             color: #155724;
         }
+
         .flash-message.error {
             background-color: #f8d7da;
             color: #721c24;
@@ -86,28 +88,28 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-title">Login</div>
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="flash-message {{ category }}">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+<div class="login-container">
+    <div class="login-title">Sign Up</div>
 
-        <form id="login-form" action="{{ url_for('login_verify') }}" method="post">
-            <input name="username" type="text" placeholder="Username" class="input-field" required>
-            <input name="password" type="password" placeholder="Password" class="input-field" required>
-            <button type="submit" class="login-button">Sign In</button>
-        </form>
-        <div class="additional-links">
-            <p><a href="#">Forgot password?</a></p>
-            <p>Not a member? <a href="#">Sign up now</a></p>
-        </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form id="login-form" action="{{ url_for('signup') }}" method="post">
+        <input name="username" type="text" placeholder="Username" class="input-field" required>
+        <input name="email" type="text" placeholder="Email" class="input-field" required>
+        <input name="password" type="password" placeholder="Password" class="input-field" required>
+        <button type="submit" class="login-button">Sign Up</button>
+    </form>
+    <div class="additional-links">
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
     </div>
+</div>
 </body>
 </html>
