@@ -7,6 +7,10 @@ db = DatabaseManager()
 app.secret_key = "secret_key"  # Necessary for using flash messages
 
 
+def setMockedDatabase(self, database):
+    self.db = database
+
+
 @app.route('/')
 def index():
     if 'username' not in session:
