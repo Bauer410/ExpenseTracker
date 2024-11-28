@@ -15,3 +15,10 @@ class ExpenseDto:
     category: str
     amount: float
     description: str
+
+@dataclass
+class ExpenseModel:
+    username: str
+    category_name: str
+    amount: float
+    description: str

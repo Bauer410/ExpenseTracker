@@ -1,6 +1,8 @@
+from typing import List
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from database.DatabaseManager import DatabaseManager
-from model.Expense import ExpenseDto
+from model.Expense import ExpenseDto, ExpenseModel
 
 app = Flask(__name__, static_folder='templates', static_url_path='/static')
 db = DatabaseManager()
@@ -13,11 +15,13 @@ def index():
         return redirect(url_for('login'))
 
     dbUser = db.getUserByUsername(session['username'])
-    expenses = []
+    expenses: List[ExpenseModel] = []
     expensesAllUsers = db.getUserExpenses()
     for expense in expensesAllUsers:
         if expense['username'] == dbUser['username']:
-            expenses.append(expense)
+            model = ExpenseModel(expense['username'], expense['category_name'], expense['amount'],
+                                 expense['description'])
+            expenses.append(model)
 
     return render_template('index.html', expenses=expenses, total_expenses=db.getTotalExpenses(dbUser['user_id']))
 

@@ -58,6 +58,10 @@
             font-weight: bold;
         }
 
+        .login-button {
+            padding-top: 20px;
+        }
+
         #pie-chart {
             margin-top: 20px;
             width: 400px;
@@ -113,6 +117,11 @@
     <div class="total-expenses">
         Total Expenses: ${{ total_expenses }}
     </div>
+
+    <form id="logout-button" action="{{ url_for('logout') }}" method="get">
+        <input type="submit" value="Logout">
+    </form>
+
 
     <!-- Pie Chart Section -->
     <canvas id="pie-chart"></canvas>
