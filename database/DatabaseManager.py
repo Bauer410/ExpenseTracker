@@ -41,8 +41,8 @@ class DatabaseManager:
         cat_id = conn.execute('SELECT * FROM categories WHERE category_name = ?', (category_name,)).fetchone()
         if cat_id is None:
             conn.execute('INSERT INTO categories (category_name) VALUES (?)', (category_name,))
+            conn.commit()
             cat_id = conn.execute('SELECT * FROM categories WHERE category_name = ?', (category_name,)).fetchone()
-        conn.commit()
         conn.close()
         return cat_id
 
@@ -102,3 +102,10 @@ class DatabaseManager:
         ).fetchall()
         conn.close()
         return total_expenses_by_category
+
+    def clearAllExpenses(self):
+        # This method is no longer used to clear expenses on refresh
+        conn = self.get_db_connection()
+        conn.execute('DELETE FROM expenses')
+        conn.commit()
+        conn.close()
